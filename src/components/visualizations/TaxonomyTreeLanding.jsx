@@ -13,26 +13,23 @@ export default function TaxonomyTreeLanding() {
     // Clear previous render
     d3.select(svgRef.current).selectAll('*').remove();
 
-    // Define which categories and items to show on landing page
+    // Define which parent categories to show on landing page
     const allowedCategories = [
-      'Intent Behind Malicious Attack',
+      'Intent Behind Malicious Attacks',
       'Contexts and Motivations',
       'Attack Methodologies',
       'Prompt Examples',
       'Image-Based Attacks',
       'Datasets',
       'Motivations Driving Attacks',
-      'Vulnerable Medical Application',
+      'Vulnerable Medical Applications',
       'Vulnerable System Designs',
-      'Attack Methodologies (Prompt I',
-      'Attack Methodologies (Data/Mod',
-      'Data Poisoning (Fine-tuning)',
-      'Weight Manipulation',
-      'Visual Perturbation (Jailbreak',
-      'Visual Grounding Attack',
-      'Model Stealing (ADA-STEAL)',
-      'Cross-Modal Mismatch Attack'
+      'Attack Methodologies (Prompt Injection)',
+      'Attack Methodologies (Data/Model Corrupt',
+      'Attack Methodologies (Visual Modality)'
     ];
+
+    const MAX_CHILDREN = 4; // Maximum number of child branches per category
 
     // Build hierarchical data structure with filtered data
     const hierarchyData = {
@@ -40,30 +37,33 @@ export default function TaxonomyTreeLanding() {
       children: []
     };
 
-    // Group by category and filter
+    // Group by category and filter - only exact matches for parent categories
     const categoryMap = {};
     filteredAttacks.forEach(attack => {
-      // Check if this category or item is in the allowed list
+      // Check if this category is in the allowed list (exact or partial match)
       const isAllowedCategory = allowedCategories.some(allowed =>
-        attack.category.includes(allowed) || allowed.includes(attack.category)
-      );
-      const isAllowedItem = allowedCategories.some(allowed =>
-        attack.item.includes(allowed) || allowed.includes(attack.item)
+        attack.category === allowed ||
+        attack.category.startsWith(allowed) ||
+        allowed.startsWith(attack.category)
       );
 
-      if (isAllowedCategory || isAllowedItem) {
+      if (isAllowedCategory) {
         if (!categoryMap[attack.category]) {
           categoryMap[attack.category] = {
             name: attack.category,
             children: []
           };
         }
-        categoryMap[attack.category].children.push({
-          name: attack.item,
-          severity: attack.severity,
-          successRate: attack.successRate,
-          data: attack
-        });
+
+        // Only add up to MAX_CHILDREN per category
+        if (categoryMap[attack.category].children.length < MAX_CHILDREN) {
+          categoryMap[attack.category].children.push({
+            name: attack.item,
+            severity: attack.severity,
+            successRate: attack.successRate,
+            data: attack
+          });
+        }
       }
     });
 
