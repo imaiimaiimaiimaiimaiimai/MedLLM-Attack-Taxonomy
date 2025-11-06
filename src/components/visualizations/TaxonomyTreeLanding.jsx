@@ -13,35 +13,66 @@ export default function TaxonomyTreeLanding() {
     // Clear previous render
     d3.select(svgRef.current).selectAll('*').remove();
 
-    // Build hierarchical data structure
+    // Define which categories and items to show on landing page
+    const allowedCategories = [
+      'Intent Behind Malicious Attack',
+      'Contexts and Motivations',
+      'Attack Methodologies',
+      'Prompt Examples',
+      'Image-Based Attacks',
+      'Datasets',
+      'Motivations Driving Attacks',
+      'Vulnerable Medical Application',
+      'Vulnerable System Designs',
+      'Attack Methodologies (Prompt I',
+      'Attack Methodologies (Data/Mod',
+      'Data Poisoning (Fine-tuning)',
+      'Weight Manipulation',
+      'Visual Perturbation (Jailbreak',
+      'Visual Grounding Attack',
+      'Model Stealing (ADA-STEAL)',
+      'Cross-Modal Mismatch Attack'
+    ];
+
+    // Build hierarchical data structure with filtered data
     const hierarchyData = {
       name: 'Medical LLM\nAttacks',
       children: []
     };
 
-    // Group by category
+    // Group by category and filter
     const categoryMap = {};
     filteredAttacks.forEach(attack => {
-      if (!categoryMap[attack.category]) {
-        categoryMap[attack.category] = {
-          name: attack.category,
-          children: []
-        };
+      // Check if this category or item is in the allowed list
+      const isAllowedCategory = allowedCategories.some(allowed =>
+        attack.category.includes(allowed) || allowed.includes(attack.category)
+      );
+      const isAllowedItem = allowedCategories.some(allowed =>
+        attack.item.includes(allowed) || allowed.includes(attack.item)
+      );
+
+      if (isAllowedCategory || isAllowedItem) {
+        if (!categoryMap[attack.category]) {
+          categoryMap[attack.category] = {
+            name: attack.category,
+            children: []
+          };
+        }
+        categoryMap[attack.category].children.push({
+          name: attack.item,
+          severity: attack.severity,
+          successRate: attack.successRate,
+          data: attack
+        });
       }
-      categoryMap[attack.category].children.push({
-        name: attack.item,
-        severity: attack.severity,
-        successRate: attack.successRate,
-        data: attack
-      });
     });
 
     hierarchyData.children = Object.values(categoryMap);
 
-    // Set up dimensions - larger for landing page
-    const width = Math.min(1200, window.innerWidth - 100);
-    const height = 700;
-    const margin = { top: 40, right: 150, bottom: 40, left: 150 };
+    // Set up dimensions - larger for landing page with more spacing
+    const width = Math.min(1400, window.innerWidth - 100);
+    const height = 800;
+    const margin = { top: 60, right: 200, bottom: 60, left: 200 };
 
     // Create SVG with dark background
     const svg = d3.select(svgRef.current)
@@ -117,16 +148,16 @@ export default function TaxonomyTreeLanding() {
       .attr('class', 'node')
       .attr('transform', d => `translate(${d.y},${d.x})`);
 
-    // Add circles with glittering animation
+    // Add circles with glittering animation - larger sizes for clarity
     nodes.append('circle')
-      .attr('r', d => d.depth === 0 ? 10 : d.depth === 1 ? 7 : 5)
+      .attr('r', d => d.depth === 0 ? 14 : d.depth === 1 ? 10 : 7)
       .attr('fill', d => {
         if (d.depth === 0) return '#3b82f6'; // Root - blue
         if (d.depth === 1) return '#8b5cf6'; // Category - purple
         return severityColor[d.data.severity] || '#94a3b8'; // Attack - by severity
       })
       .attr('stroke', '#fff')
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 3)
       .style('cursor', 'pointer')
       .style('filter', (d, i) => `url(#glow-${i % 3})`)
       .attr('opacity', 0)
@@ -139,7 +170,7 @@ export default function TaxonomyTreeLanding() {
     nodes.selectAll('circle')
       .each(function(d, i) {
         const circle = d3.select(this);
-        const baseRadius = d.depth === 0 ? 10 : d.depth === 1 ? 7 : 5;
+        const baseRadius = d.depth === 0 ? 14 : d.depth === 1 ? 10 : 7;
 
         // Create pulsing animation
         function pulse() {
@@ -186,19 +217,19 @@ export default function TaxonomyTreeLanding() {
       setTimeout(addSparkle, 3000 + i * 50);
     });
 
-    // Add labels with fade-in
+    // Add labels with fade-in - larger text for clarity
     nodes.append('text')
       .attr('dy', '0.31em')
-      .attr('x', d => d.children ? -15 : 15)
+      .attr('x', d => d.children ? -20 : 20)
       .attr('text-anchor', d => d.children ? 'end' : 'start')
       .text(d => {
-        const maxLength = d.depth === 0 ? 20 : d.depth === 1 ? 30 : 25;
+        const maxLength = d.depth === 0 ? 20 : d.depth === 1 ? 40 : 35;
         const text = d.data.name;
         return text.length > maxLength
           ? text.substring(0, maxLength) + '...'
           : text;
       })
-      .attr('font-size', d => d.depth === 0 ? '16px' : d.depth === 1 ? '13px' : '12px')
+      .attr('font-size', d => d.depth === 0 ? '18px' : d.depth === 1 ? '15px' : '13px')
       .attr('font-weight', d => d.depth === 0 ? 'bold' : d.depth === 1 ? '600' : 'normal')
       .attr('fill', 'hsl(var(--foreground))')
       .style('cursor', 'pointer')
@@ -223,14 +254,14 @@ export default function TaxonomyTreeLanding() {
         d3.select(this)
           .transition()
           .duration(200)
-          .attr('r', d => (d.depth === 0 ? 10 : d.depth === 1 ? 7 : 5) * 1.5)
+          .attr('r', d => (d.depth === 0 ? 14 : d.depth === 1 ? 10 : 7) * 1.5)
           .style('filter', 'url(#glow-2)');
       })
       .on('mouseout', function() {
         d3.select(this)
           .transition()
           .duration(200)
-          .attr('r', d => d.depth === 0 ? 10 : d.depth === 1 ? 7 : 5)
+          .attr('r', d => d.depth === 0 ? 14 : d.depth === 1 ? 10 : 7)
           .style('filter', (d, i) => `url(#glow-${i % 3})`);
       });
 
