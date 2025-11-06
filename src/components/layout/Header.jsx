@@ -8,10 +8,10 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
 
   const navLinks = [
-    { path: '/', label: 'Dashboard' },
+    { path: '/', label: 'Home' },
+    { path: '/dashboard', label: 'Dashboard' },
     { path: '/explorer', label: 'Explorer' },
     { path: '/references', label: 'References' },
-    { path: '/comparison', label: 'Comparison' },
   ];
 
   return (
