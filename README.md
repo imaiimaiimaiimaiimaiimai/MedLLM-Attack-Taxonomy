@@ -2,6 +2,8 @@
 
 An interactive web application to visualize and explore adversarial attacks on medical AI systems. This tool enables researchers, developers, and policymakers to filter, search, compare, and understand attack patterns through rich visualizations and interactive data exploration.
 
+🔗 **Live Demo**: https://imaiimaiimaiimaiimaiimai.github.io/MedLLM-Attack-Taxonomy/
+
 ## 🚀 Features
 
 ### Core Functionality
@@ -117,6 +119,9 @@ npm run build
 
 # Preview production build
 npm run preview
+
+# Deploy to GitHub Pages
+npm run deploy
 ```
 
 ## 🎯 Usage
