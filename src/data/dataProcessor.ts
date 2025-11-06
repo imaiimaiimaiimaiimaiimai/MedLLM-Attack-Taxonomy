@@ -264,8 +264,16 @@ export async function processAttacksData(csvContent: string): Promise<ProcessedD
  */
 export async function loadAttacksData(): Promise<ProcessedData> {
   try {
-    // Try to import the CSV file directly
-    const response = await fetch('/src/data/attacks.csv');
+    // Use base URL from Vite config to work in both dev and production
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    const csvPath = `${baseUrl}attacks.csv`;
+
+    console.log('Loading CSV from:', csvPath);
+    const response = await fetch(csvPath);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch CSV: ${response.status} ${response.statusText}`);
+    }
     const csvText = await response.text();
     return await processAttacksData(csvText);
   } catch (error) {
