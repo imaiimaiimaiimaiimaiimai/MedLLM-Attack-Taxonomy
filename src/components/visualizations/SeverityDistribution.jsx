@@ -11,11 +11,17 @@ const COLORS = {
 export default function SeverityDistribution() {
   const { filteredAttacks, toggleFilter } = useFilterStore();
 
+  console.log('SeverityDistribution - filteredAttacks:', filteredAttacks.length);
+
   // Count attacks by severity
   const severityCounts = filteredAttacks.reduce((acc, attack) => {
-    acc[attack.severity] = (acc[attack.severity] || 0) + 1;
+    if (attack.severity) {
+      acc[attack.severity] = (acc[attack.severity] || 0) + 1;
+    }
     return acc;
   }, {});
+
+  console.log('SeverityDistribution - severityCounts:', severityCounts);
 
   const data = Object.entries(severityCounts).map(([severity, count]) => ({
     name: severity.charAt(0).toUpperCase() + severity.slice(1),
@@ -24,11 +30,13 @@ export default function SeverityDistribution() {
     percentage: ((count / filteredAttacks.length) * 100).toFixed(1),
   }));
 
-  if (data.length === 0) {
+  console.log('SeverityDistribution - data:', data);
+
+  if (!filteredAttacks || filteredAttacks.length === 0 || data.length === 0) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Severity Distribution</CardTitle>
+          <CardTitle>Attack Severity Distribution</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground text-center py-8">
