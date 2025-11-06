@@ -56,8 +56,8 @@ export default function SeverityDistribution() {
       <CardHeader>
         <CardTitle>Attack Severity Distribution</CardTitle>
       </CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
+      <CardContent className="h-[350px]">
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={data}
