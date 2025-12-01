@@ -2,7 +2,7 @@
 
 An interactive web application to visualize and explore adversarial attacks on medical AI systems. This tool enables researchers, developers, and policymakers to filter, search, compare, and understand attack patterns through rich visualizations and interactive data exploration.
 
-🔗 **Live Demo**: https://imaiimaiimaiimaiimaiimai.github.io/MedLLM-Attack-Taxonomy/
+🔗 **Live Demo**: https://chriskambimbi.github.io/MedLLM-Attack-Taxonomy/
 
 ## 🚀 Features
 
@@ -105,7 +105,7 @@ src/
 
 ```bash
 # Clone the repository
-git clone https://github.com/imaiimaiimaiimaiimaiimai/MedLLM-Attack-Taxonomy.git
+git clone https://github.com/chriskambimbi/MedLLM-Attack-Taxonomy.git
 cd MedLLM-Attack-Taxonomy
 
 # Install dependencies
@@ -252,8 +252,8 @@ ISC
 
 ## 🔗 Links
 
-- **Repository**: https://github.com/imaiimaiimaiimaiimaiimai/MedLLM-Attack-Taxonomy
-- **Documentation**: [Wiki](https://github.com/imaiimaiimaiimaiimaiimai/MedLLM-Attack-Taxonomy/wiki)
+- **Repository**: https://github.com/chriskambimbi/MedLLM-Attack-Taxonomy
+- **Documentation**: [Wiki](https://github.com/chriskambimbi/MedLLM-Attack-Taxonomy/wiki)
 
 ## 📧 Contact
 

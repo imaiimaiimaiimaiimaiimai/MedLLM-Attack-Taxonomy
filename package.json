@@ -10,7 +10,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "homepage": "https://imaiimaiimaiimaiimaiimai.github.io/MedLLM-Attack-Taxonomy",
+  "homepage": "https://chriskambimbi.github.io/MedLLM-Attack-Taxonomy",
   "description": "Medical LLM Attack Taxonomy Interactive Web Explorer",
   "devDependencies": {
     "@types/lodash": "^4.17.20",
